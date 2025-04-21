@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tambah Todoolist</title>
+  <style>
+    body { background-color: rgba(55, 142, 198, 0.7019607843137254); font-family: Arial; padding: 20px; }
+    input, select { margin: 5px 0; padding: 5px; width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Tambah Todoolist</h2>
+  <input type="text" id="nama" placeholder="Nama Tugas">
+  <select id="prioritas">
+    <option value="Rendah">Rendah</option>
+    <option value="Sedang">Sedang</option>
+    <option value="Tinggi">Tinggi</option>
+  </select>
+  <input type="date" id="tanggal">
+  <button onclick="submitTodoolist()">Tambah</button><br><br>
+  <a href="forum-data-todoolist.html">Lihat Daftar</a>
+
+  <script src="main.js"></script>
+  <script>
+    function submitTodoolist() {
+      const nama = document.getElementById("nama").value;
+      const prioritas = document.getElementById("prioritas").value;
+      const tanggal = document.getElementById("tanggal").value;
+      if (!nama || !tanggal) {
+        alert("Semua data harus diisi!");
+        return;
+      }
+      tambahTodoolist(nama, prioritas, tanggal);
+    }
+  </script>
+</body>
+</html>
