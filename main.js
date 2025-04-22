@@ -1,21 +1,16 @@
-// pemrograman memusingkan
-let todos = [];
-
-function renderList() {
-  const listContainer = document.getElementById("taskList");
-  if (!listContainer) return;
-  listContainer.innerHTML = "";
-
-  todos.forEach((task, index) => {
-    const div = document.createElement("div");
-    div.className = "task";
-    const taskText = document.createElement("span");
-    taskText.innerHTML = `
-      <strong>${task.nama}</strong> | Prioritas: ${task.prioritas} | Tanggal: ${task.tanggal}
-    `;
-    if (task.selesai) taskText.classList.add("done");
-
-    div.appendChild(taskText);
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  getDoc,
+  deleteDoc, 
+  doc, 
+  query, 
+  orderBy, 
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {

@@ -2,18 +2,20 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Tambah Todoolist</title>
+  <title> Todoolist</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </head>
+   
   <style>
     body { background-color: rgba(55, 142, 198, 0.7019607843137254); font-family: Arial; padding: 20px; }
     input, select { margin: 5px 0; padding: 5px; width: 100%; }
   </style>
 </head>
 <body>
-  <h2>Tambah Todoolist</h2>
+  <h2>Todoolist</h2>
   <input type="text" id="nama" placeholder="Nama Tugas">
   <select id="prioritas">
     <option value="Rendah">Rendah</option>
@@ -23,19 +25,19 @@
   <input type="date" id="tanggal">
   <button onclick="submitTodoolist()">Tambah</button><br><br>
   <a href="forum-data-todoolist.html">Lihat Daftar</a>
-
-  <script src="main.js"></script>
-  <script>
-    function submitTodoolist() {
-      const nama = document.getElementById("nama").value;
-      const prioritas = document.getElementById("prioritas").value;
-      const tanggal = document.getElementById("tanggal").value;
-      if (!nama || !tanggal) {
-        alert("Semua data harus diisi!");
-        return;
+ <script type="module">
+   import { tambahtodoolist } from './main.js';
+   let tombolTambah = document .getElementById('tombol-tambah');
+   let elemennama tugas = document.getElementById ('input-nama tugas');
+   let elemenprioritas = document.getElementById ('input-proritas');
+   let elementanggal = document.getElementById ('input-tanggal');
+   tombolTambah.addEventListener ('click', async function(e) {
+     e.preventDefault();
       }
-      tambahTodoolist(nama, prioritas, tanggal);
-    }
+      await tambahTodoolist(nama, prioritas, tanggal);
+    };
+    window.location.href = 'index.html'
+    }) 
   </script>
 </body>
 </html>
