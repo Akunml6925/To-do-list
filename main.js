@@ -1,14 +1,14 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {
-  getFirestore, 
-  collection, 
-  addDoc, 
-  getDocs, 
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
   getDoc,
-  deleteDoc, 
-  doc, 
-  query, 
-  orderBy, 
+  deleteDoc,
+  doc,
+  query,
+  orderBy,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -23,41 +23,91 @@ const firebaseConfig = {
   measurementId: "G-NKKFY4X1ZC"
 };
 // Inisialisasi Firebase
-    const selesaiBtn = document.createElement("button");
-    selesaiBtn.textContent = task.selesai ? "Batal" : "Selesai";
-    selesaiBtn.onclick = () => {
-      todos[index].selesai = !todos[index].selesai;
-      renderList();
-    };
+  // Ambil data tugas dari localStorage
+let tugas = JSON.parse(localStorage.getItem('tugas')) || [];
 
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.onclick = () => {
-      const nama = prompt("Edit nama:", task.nama);
-      const prioritas = prompt("Edit prioritas:", task.prioritas);
-      const tanggal = prompt("Edit tanggal:", task.tanggal);
-      if (nama && prioritas && tanggal) {
-        todos[index] = { ...todos[index], nama, prioritas, tanggal };
-        renderList();
-      }
-    };
+// Tampilkan tugas
+function tampilkanTugas() {
+    const belumSelesai = document.getElementById('belum-selesai')?.querySelector('tbody');
+    const telahSelesai = document.getElementById('telah-selesai')?.querySelector('tbody');
 
-    const hapusBtn = document.createElement("button");
-    hapusBtn.textContent = "Hapus";
-    hapusBtn.onclick = () => {
-      todos.splice(index, 1);
-      renderList();
-    };
+    if (belumSelesai) belumSelesai.innerHTML = '';
+    if (telahSelesai) telahSelesai.innerHTML = '';
 
-    div.appendChild(selesaiBtn);
-    div.appendChild(editBtn);
-    div.appendChild(hapusBtn);
-
-    listContainer.appendChild(div);
-  });
+    tugas.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${item.nama}</td>
+            <td>${item.prioritas}</td>
+            <td>${item.status}</td>
+            <td>${item.tanggal}</td>
+            <td>
+                <button onclick="tandaiSelesai(${index})" class="btn-aksi selesai">Tandai Selesai</button>
+                <button onclick="editTugas(${index})" class="btn-aksi edit">Edit</button>
+                <button onclick="hapusTugas(${index})" class="btn-aksi hapus">Hapus</button>
+            </td>
+        `;
+        if (item.status === 'Belum Selesai') {
+            belumSelesai.appendChild(tr);
+        } else {
+            telahSelesai.appendChild(tr);
+        }
+    });
 }
 
-function tambahTodoolist(nama, prioritas, tanggal) {
-  todos.push({ nama, prioritas, tanggal, selesai: false });
-  alert("Tugas berhasil ditambahkan!");
+// Tambah tugas baru
+const formTugas = document.getElementById('form-tugas');
+if (formTugas) {
+    formTugas.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nama = this.nama.value;
+        const prioritas = this.prioritas.value;
+        const tanggal = this.tanggal.value;
+        tugas.push({ nama, prioritas, tanggal, status: 'Belum Selesai' });
+        localStorage.setItem('tugas', JSON.stringify(tugas));
+        window.location.href = 'index.html';
+    });
 }
+
+// Edit tugas
+function editTugas(index) {
+    localStorage.setItem('editIndex', index);
+    window.location.href = 'ubah-todoolist.html';
+}
+
+// Ubah tugas
+const formUbahTugas = document.getElementById('form-ubah-tugas');
+if (formUbahTugas) {
+    const index = localStorage.getItem('editIndex');
+    if (index !== null) {
+        formUbahTugas.nama.value = tugas[index].nama;
+        formUbahTugas.prioritas.value = tugas[index].prioritas;
+        formUbahTugas.tanggal.value = tugas[index].tanggal;
+    }
+    formUbahTugas.addEventListener('submit', function(e) {
+        e.preventDefault();
+        tugas[index].nama = this.nama.value;
+        tugas[index].prioritas = this.prioritas.value;
+        tugas[index].tanggal = this.tanggal.value;
+        localStorage.setItem('tugas', JSON.stringify(tugas));
+        localStorage.removeItem('editIndex');
+        window.location.href = 'index.html';
+    });
+}
+
+// Tandai selesai
+function tandaiSelesai(index) {
+    tugas[index].status = 'Selesai';
+    localStorage.setItem('tugas', JSON.stringify(tugas));
+    tampilkanTugas();
+}
+
+// Hapus tugas
+function hapusTugas(index) {
+    tugas.splice(index, 1);
+    localStorage.setItem('tugas', JSON.stringify(tugas));
+    tampilkanTugas();
+}
+
+// Saat halaman dimuat
+document.addEventListener('DOMContentLoaded', tampilkanTugas);
