@@ -74,6 +74,7 @@ function editTugas(index) {
     localStorage.setItem('editIndex', index);
     window.location.href = 'ubah-todoolist.html';
 }
+ window.editTugas = editTugas;
 
 // Ubah tugas
 const formUbahTugas = document.getElementById('form-ubah-tugas');
@@ -94,13 +95,13 @@ if (formUbahTugas) {
         window.location.href = 'index.html';
     });
 }
-
 // Tandai selesai
 function tandaiSelesai(index) {
     tugas[index].status = 'Selesai';
     localStorage.setItem('tugas', JSON.stringify(tugas));
     tampilkanTugas();
 }
+ window.tandaiSelesai = tandaiSelesai;
 
 // Hapus tugas
 function hapusTugas(index) {
@@ -108,6 +109,7 @@ function hapusTugas(index) {
     localStorage.setItem('tugas', JSON.stringify(tugas));
     tampilkanTugas();
 }
+window.hapusTugas = hapusTugas;
 
 // Saat halaman dimuat
 document.addEventListener('DOMContentLoaded', tampilkanTugas);
